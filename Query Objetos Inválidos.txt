@@ -16,7 +16,7 @@ instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 2)
 )))
 FROM dba_source c
 WHERE c.owner = a.owner
-AND c.name = a.object_name
+--AND c.name = a.object_name
 AND c.type = a.object_type
 AND c.line = 2
 AND c.text like '%$Header%'
