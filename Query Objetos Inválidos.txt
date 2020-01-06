@@ -30,3 +30,4 @@ AND a.owner = 'APPS'
 AND a.status = 'INVALID'
 --1
 --2
+--1
