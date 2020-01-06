@@ -1,0 +1,30 @@
+SELECT a.object_name,
+decode(a.object_type,
+'PACKAGE', 'Package Spec',
+'PACKAGE BODY', 'Package Body',
+a.object_type) type,
+(
+SELECT ltrim(rtrim(substr(substr(c.text, instr(c.text,'Header: ')),
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 1),
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 2) -
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 1)
+))) || ' - ' ||
+ltrim(rtrim(substr(substr(c.text, instr(c.text,'Header: ')),
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 2),
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 3) -
+instr(substr(c.text, instr(c.text,'Header: ')), ' ', 1, 2)
+)))
+FROM dba_source c
+WHERE c.owner = a.owner
+AND c.name = a.object_name
+AND c.type = a.object_type
+AND c.line = 2
+AND c.text like '%$Header%'
+) FILE_VERSION,
+b.text ERROR_TEXT
+FROM dba_objects a,
+dba_errors b
+WHERE a.object_name = b.name(+)
+AND a.object_type = b.type(+)
+AND a.owner = 'APPS'
+AND a.status = 'INVALID'
