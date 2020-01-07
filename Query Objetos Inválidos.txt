@@ -28,5 +28,3 @@ WHERE a.object_name = b.name(+)
 AND a.object_type = b.type(+)
 AND a.owner = 'APPS'
 AND a.status = 'INVALID'
---1
-
